@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 puts 'Enter base'
-base = gets
+base = gets.to_i
 
 puts 'Enter height'
-height = gets
+height = gets.to_i
 
-result = 0.5 * base.to_i * height.to_i
+result = 0.5 * base * height
 
 if result.positive?
   puts result
