@@ -14,9 +14,7 @@ class Station
   end
 
   def trains_by(type)
-    result = []
-    @trains.each { |train| result.append train if train.type == type }
-    result
+    @trains.select { |train| train if train.type == type }
   end
 
   def count_trains_by(type)
@@ -33,7 +31,7 @@ class Route
   attr_reader :stations
 
   def initialize(start, finish)
-    @stations = [@start = start, @finish = finish]
+    @stations = [start, finish]
   end
 
   def add_station(name)
@@ -52,7 +50,7 @@ end
 # Train class
 class Train
   attr_accessor :speed
-  attr_reader :wagons, :type
+  attr_reader :wagons, :type, :cur_station
 
   def initialize(number, type, wagons)
     @number = number
@@ -86,11 +84,21 @@ class Train
   end
 
   def next_station
-    @route.stations[@route.stations.index(@cur_station) + 1] if @cur_station != @route.stations.last
+    if @cur_station != @route.stations.last
+      @route.stations[@route.stations.index(@cur_station) + 1]
+    else
+      puts 'This is the last station'
+      @cur_station
+    end
   end
 
   def prev_station
-    @route.stations[@route.stations.index(@cur_station) - 1] if @cur_station != @route.stations.first
+    if @cur_station != @route.stations.first
+      @route.stations[@route.stations.index(@cur_station) - 1]
+    else
+      puts 'This is the first station'
+      @cur_station
+    end
   end
 
   def go_to_next_station
@@ -99,11 +107,5 @@ class Train
 
   def go_to_prev_station
     @cur_station = prev_station
-  end
-
-  def stations_nearby
-    puts prev_station
-    puts @cur_station
-    puts next_station
   end
 end
