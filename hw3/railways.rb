@@ -13,17 +13,14 @@ class Station
     @trains << train
   end
 
-  def show_types
-    cargos = passengers = 0
-    @trains.each do |train|
-      case train.type
-      when 'cargo'
-        cargos += 1
-      when 'passenger'
-        passengers += 1
-      end
-    end
-    puts "There are #{cargos} cargo's and #{passengers} passenger trains on the station"
+  def trains_by(type)
+    result = []
+    @trains.each { |train| result.append train if train.type == type }
+    result
+  end
+
+  def count_trains_by(type)
+    trains_by(type).size
   end
 
   def send_train(train)
@@ -36,9 +33,7 @@ class Route
   attr_reader :stations
 
   def initialize(start, finish)
-    @start = start
-    @finish = finish
-    @stations = [@start, @finish]
+    @stations = [@start = start, @finish = finish]
   end
 
   def add_station(name)
@@ -63,7 +58,7 @@ class Train
     @number = number
     @type = type
     @wagons = wagons
-    @qur_station = nil
+    @cur_station = nil
     @speed = 0
   end
 
@@ -87,21 +82,28 @@ class Train
 
   def route=(route)
     @route = route
-    @qur_station = @route.stations.first
+    @cur_station = @route.stations.first
   end
 
-  def change_station(operation)
-    case operation
-    when 'inc'
-      @qur_station = @route.stations[@route.stations.index(@qur_station) + 1]
-    when 'dec'
-      @qur_station = @route.stations[@route.stations.index(@qur_station) - 1]
-    end
+  def next_station
+    @route.stations[@route.stations.index(@cur_station) + 1] if @cur_station != @route.stations.last
   end
 
-  def print_stations_nearby
-    puts @route.stations[@route.stations.index(@qur_station) - 1].name
-    puts @qur_station.name
-    puts @route.stations[@route.stations.index(@qur_station) + 1].name
+  def prev_station
+    @route.stations[@route.stations.index(@cur_station) - 1] if @cur_station != @route.stations.first
+  end
+
+  def go_to_next_station
+    @cur_station = next_station
+  end
+
+  def go_to_prev_station
+    @cur_station = prev_station
+  end
+
+  def stations_nearby
+    puts prev_station
+    puts @cur_station
+    puts next_station
   end
 end
