@@ -19,6 +19,8 @@ class Main
     @stations = []
   end
 
+  private
+
   def create_station
     puts 'Введите название станции'
     @stations << Station.new(gets.chomp)
