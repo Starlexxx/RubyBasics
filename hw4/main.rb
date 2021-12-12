@@ -19,6 +19,28 @@ class Main
     @stations = []
   end
 
+  def menu
+    loop do
+      puts 'Что вы хотите сделать?'
+      options
+      operation = gets.to_i
+      case operation
+      when 1 then create_station
+      when 2 then create_train
+      when 3 then create_route
+      when 4 then add_station
+      when 5 then delete_station
+      when 6 then assign_route
+      when 7 then add_wagon
+      when 8 then delete_wagon
+      when 9 then go_to_next_station
+      when 10 then go_to_prev_station
+      when 11 then show
+      when 0 then break
+      end
+    end
+  end
+
   private
 
   def create_station
@@ -157,30 +179,6 @@ class Main
     0. Выход'
     puts "\n"
   end
-
-  def menu
-    loop do
-      puts 'Что вы хотите сделать?'
-      options
-      operation = gets.to_i
-      case operation
-      when 1 then create_station
-      when 2 then create_train
-      when 3 then create_route
-      when 4 then add_station
-      when 5 then delete_station
-      when 6 then assign_route
-      when 7 then add_wagon
-      when 8 then delete_wagon
-      when 9 then go_to_next_station
-      when 10 then go_to_prev_station
-      when 11 then show
-      when 0 then break
-      end
-    end
-  end
-
-  private
 
   def print_routes
     @routes.each_with_index { |route, index| puts "#{index}. #{route.name}" }
