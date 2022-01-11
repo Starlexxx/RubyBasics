@@ -71,7 +71,7 @@ class Train
   def validate!
     raise 'Формат номера неверный' if @number !~ VALID_NUMBER
     raise 'Тип поезда может быть только cargo либо passenger' if @type != 'cargo' && @type != 'passenger'
-    raise 'Номер поезда должен быть уникальным' if Train.find(@number) != nil
+    raise 'Номер поезда должен быть уникальным' unless Train.find(@number).nil?
   end
 
   def next_station

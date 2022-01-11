@@ -48,7 +48,7 @@ class Station
 
   def validate!
     raise 'Название станции не должно быть пустым' if @name == ('' || ' ')
-    raise 'Название станции должно быть уникальным' if Station.find(@name) != nil
+    raise 'Название станции должно быть уникальным' unless Station.find(@name).nil?
   end
 
   def trains_by(type)
