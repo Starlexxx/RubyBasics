@@ -13,7 +13,7 @@ module Validation
 
     def validate(name, type, *args)
       @validations ||= []
-      @validations << [[name, type, args[0]]]
+      @validations << { name: name, type: type, args: args }
     end
   end
 
@@ -22,10 +22,8 @@ module Validation
     def validate!
       return if self.class.validations.nil?
 
-      self.class.validations.each do |validations_array|
-        validations_array.each do |var, type, arg|
-          send("#{type}_validate", instance_variable_get("@#{var}"), arg)
-        end
+      self.class.validations.each do |validation|
+        send("#{validation[:type]}_validate", instance_variable_get("@#{validation[:name]}"), *validation[:args])
       end
     end
   end
@@ -39,7 +37,7 @@ module Validation
 
   private
 
-  def presence_validate(name, _)
+  def presence_validate(name)
     raise 'Переменная не должна быть пустой' if name.nil? || name == ''
   end
 
